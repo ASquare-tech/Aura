@@ -14,6 +14,8 @@
 #define BEAT_MODE_NOISE_VALUE								0x2A	
 #define BEAT_MODE_FREQUENCY_OFFSET							0x07	
 
+#define BEAT_COUTER_THRESHOLD								0x10	
+
 // TODO: Customize for effect
 #define BRIGHTNESS_FACTOR									0x0F	
 #define COLOR_FACTOR										0x0A	
@@ -26,8 +28,11 @@
 /*                        PUBLIC FUNCTIONS                    */
 /**************************************************************/
 
+uint8_t SwitchingBeatModeWithCount(int *sound);
 void RandomBeatMode(int *sound);
 void ColorBeatMode(int *sound);
+uint8_t RandomBeatModeWithCount(int *sound);
+uint8_t ColorBeatModeWithCount(int *sound);
 
 /**************************************************************/
 /*                        PRIVATE FUNCTIONS                   */

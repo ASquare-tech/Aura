@@ -5,13 +5,18 @@
 /*                        DEFINE & TYPEDEF                    */
 /**************************************************************/
 
-#define TIMER_MS_ONE_SECOND		0x32
-#define TIMER_MS_RESET			0x00
-#define TIMER_ONE_SECOND_RESET	0x00000000
-#define TIMER_ONE_SECOND		0x00000001
-#define TIMER_SECONE_MINUTE		0x00000E10
-#define TIMER_THRITY_SECOND		0x1E
-#define MINUTE_DELAY_SWITCH		0x01 
+#define TIMER_COUNTER_INIT									0x00
+#define LOW_SOUND_TIMER_COUNTER_TIMEOUT						0xAF	// 3.5 Seconds
+
+
+#define PEAK_SOUND_TIMER_COUNTER_TIMEOUT_1					0x32	// 1 Second
+#define PEAK_SOUND_TIMER_COUNTER_TIMEOUT_2					0x50	// 1.6 Seconds
+
+#define PEAK_COUNTER_INIT									0x00
+#define PEAK_COUNTER_THRESHOLD_1							0x01
+#define PEAK_COUNTER_THRESHOLD_2							0x02
+
+#define BEAT_COUNT_LIMIT_TO_SWITCH							0x10
 
 #define MODE_NORMAL				0x00
 #define MODE_PARTY				0x01
@@ -27,42 +32,30 @@
 // #define HALF_SAMPLE_MAX_NUMBER	0x12C
 // #define MIN_TOTAL_NUMBER		0x258
 
-typedef struct switchInfo_t	
-{
-  int 		timerSecond;
-  char  	timerMs;
-  char 		currentMode;
-  char 		currentSoundState;
-  int 		timerSecondSoundLevel;
-  int		sampleNumber;
-  int 		totalSampleValue;
-}switchInfo_s;
+#define BEAT_COUNT_LOW_LIMIT	0x05
+
+#define SWITCH_MODE_NOK			0x00
+#define SWITCH_MODE_OK			0x01
 
 /**************************************************************/
 /*                        PUBLIC DATA                         */
 /**************************************************************/
 
-extern switchInfo_s switchInfo;
-
 /**************************************************************/
 /*                        PUBLIC FUNCTIONS                    */
 /**************************************************************/
 
-void SwitchModeTick();
 void SwitchModeInit();
-char getActualMode();
+uint8_t SwitchModeFromBeat(uint8_t beatCount);
+uint8_t SwitchModeFromNormal(uint8_t beatCount);
+uint8_t GetCurrentMode();
+void SetCurrentMode(uint8_t mode);
 
 /**************************************************************/
 /*                        PRIVATE FUNCTIONS                   */
 /**************************************************************/
 
-static void switchToNewMode(char newMode);
-static void checkIfModeShouldSwitch();
-static void SwitchModeWhenNormal();
-static void SwitchModeWhenParty();
-static void SwitchModeWhenOff();
-static void updateSoundLevel();
-static char updateTimer();
-static void resetSoundValue();
+static void SwitchModeResetValue();
+static void SwitchToNewMode(uint8_t newMode);
 
 #endif
